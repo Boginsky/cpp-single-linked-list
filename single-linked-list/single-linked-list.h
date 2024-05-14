@@ -1,3 +1,5 @@
+#pragma once
+
 #include <cassert>
 #include <cstddef>
 #include <string>
@@ -93,15 +95,11 @@ public:
     }
     
     SingleLinkedList(std::initializer_list<Type> values) {
-        SingleLinkedList temp;
-        initList(temp, values.begin(), values.end());
-        swap(temp);
+        initList(values.begin(), values.end());
     }
 
     SingleLinkedList(const SingleLinkedList& other) {
-        SingleLinkedList temp;
-        initList(temp, other.begin(), other.end());
-        swap(temp);
+        initList(other.begin(), other.end());
     }
 
     SingleLinkedList& operator=(const SingleLinkedList& rhs) {
@@ -223,15 +221,18 @@ private:
     size_t size_ = 0;
     
     template <typename Iterator>
-    void initList(SingleLinkedList& list, Iterator begin, Iterator end) {
-        Node* node = &list.head_;
+    void initList(Iterator begin, Iterator end) {
+        SingleLinkedList temp;
+        Node* node = &temp.head_;
 
         for (auto it = begin; it != end; ++it) {
             node->next_node = new Node(*it, nullptr);
             node = node->next_node;
 
-            ++list.size_;
+            ++temp.size_;
         }
+
+        swap(temp);
     }
 };
 
